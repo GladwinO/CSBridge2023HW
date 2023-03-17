@@ -1,14 +1,16 @@
 // gto219_hw10_q2.cpp
 
 #include <iostream>
+#include <vector>
 
 
-//int* findMissing(int arr[], int n, int& resArrSize);
+int* findMissing(int arr[], int n, int& resArrSize);
 int* requestUserArray(int maxNum);
+int* creatAscenNumArr(int numVal);
 
 int main()
 {
-    int numInputVals{ 0 };
+    int numInputVals{ 0 }, missinNumArrSize{0};
     int* inputArray;
     int* missingNumArray;
     
@@ -17,10 +19,10 @@ int main()
      
     inputArray = requestUserArray(numInputVals);
 
-    for (int i = 0; i < numInputVals; i++)
+    /*for (int i = 0; i < numInputVals; i++)
     {
         std::cout << inputArray[i] << std::endl;
-    }
+    }*/
 
 
     delete[] inputArray;
@@ -47,7 +49,18 @@ int* requestUserArray(int maxNum)
     return userArray;
 }
 
-//int* findMissing(int arr[], int n, int& resArrSize)
-//{
-//
-//}
+int* findMissing(int arr[], int n, int& resArrSize)
+{
+    std::vector<int> tempVec;
+    int arrIndexPosCount{0};
+    
+    int* listOfPossNumArr = new int[n + 1];
+
+
+    return listOfPossNumArr;
+}
+ 
+int* creatAscenNumArr(int numVal)
+{
+    dfdfd
+}
