@@ -51,16 +51,41 @@ int* requestUserArray(int maxNum)
 
 int* findMissing(int arr[], int n, int& resArrSize)
 {
-    std::vector<int> tempVec;
+    std::vector<int> vecMissingNumArr;
     int arrIndexPosCount{0};
+    int i = 0, j = 0;
     
-    int* listOfPossNumArr = new int[n + 1];
+    int* listNumArr = creatAscenNumArr(n);
+    
+
+    while (i < n && j < n + 1)
+    {
+        if (arr[i] == listNumArr[j])
+        {
+            vecMissingNumArr.push_back(i);
+            i++;
+            j = 0;
+        }
+        else
+        {
+            j++;
+        }
+
+    }
 
 
-    return listOfPossNumArr;
+    delete[] listNumArr;
+    listNumArr = nullptr;
+  
 }
  
 int* creatAscenNumArr(int numVal)
 {
-    dfdfd
+    int* listOfPossNumArr = new int[numVal + 1];
+
+    for (int i = 0; i < numVal + 1; i++)
+    {
+        listOfPossNumArr[i] = i;
+    }
+    return listOfPossNumArr;
 }
