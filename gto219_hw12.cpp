@@ -1,11 +1,35 @@
 ﻿// gto219_hw12.cpp :
 
 #include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <cctype>
 
-class Money{
+class Check {
+
+private:
+    int checkNum;
+    double checkAmount;
+    bool isCashed;
+
+public:
+    
+    
+    Check(int checkNum, double checkAmount, bool isCashed);
+    
+    Check(int checkNum, double checkAmount);
+    
+    Check(int checkNum);
+    
+    Check();
+
+    int getCheckNum() const;
+    double getCheckAmount() const;
+    bool getIsChased() const;
+
+    void setCheckNum(int newCheckNum);
+    void setCheckAmount(double newCheckAmount);
+    void setIsCashed(bool newIsCashed);
+};
+
+class Money {
 
 private:
     long all_cents;
@@ -54,7 +78,6 @@ public:
     //Precondition: If outs is a file output stream, then outs has already been
     //connected to a file.
 
-
 };
 
 int digit_to_int(char c);
@@ -68,6 +91,54 @@ int main()
 {
     std::cout << "Hello World!\n";
 }
+
+int Check::getCheckNum() const {
+    return checkNum;
+}
+
+double Check::getCheckAmount() const {
+    return checkAmount;
+}
+
+bool Check::getIsChased() const {
+    return isCashed;
+}
+
+void Check::setCheckNum(int newCheckNum) {
+    if (newCheckNum != checkNum && newCheckNum >= 0) {
+        checkNum = newCheckNum;
+    }
+}
+void Check::setCheckAmount(double newCheckAmount) {
+    if (newCheckAmount != checkAmount && newCheckAmount >= 0) {
+        checkAmount = newCheckAmount;
+    }
+}
+void Check::setIsCashed(bool newIsCashed) {
+    if (newIsCashed != isCashed) {
+        isCashed = newIsCashed;
+    }
+}
+
+Check::Check(int checkNum, double checkAmount, bool isCashed) : checkNum(checkNum), checkAmount(checkAmount), isCashed(isCashed) {
+    //Body intentionally blank.
+}
+
+Check::Check(int checkNum, double checkAmount) : checkNum(checkNum), checkAmount(checkAmount), isCashed(false) {
+    //Body intentionally blank.
+}
+
+Check::Check(int checkNum) : checkNum(checkNum), checkAmount(0), isCashed(false) {
+    //Body intentionally blank.
+}
+
+Check::Check() : checkNum(0), checkAmount(0), isCashed(false) {
+    //Body intentionally blank.
+}
+
+
+
+
 
 
 Money operator +(const Money& amount1, const Money& amount2) {
