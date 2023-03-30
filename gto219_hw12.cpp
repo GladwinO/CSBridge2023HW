@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-class Check {
+class Check : public Money {
 
 private:
     int checkNum;
@@ -135,6 +135,48 @@ Check::Check(int checkNum) : checkNum(checkNum), checkAmount(0), isCashed(false)
 Check::Check() : checkNum(0), checkAmount(0), isCashed(false) {
     //Body intentionally blank.
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
