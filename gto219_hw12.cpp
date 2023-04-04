@@ -1,33 +1,7 @@
 ﻿// gto219_hw12.cpp :
 
 #include <iostream>
-
-class Check : public Money {
-
-private:
-    int checkNum;
-    double checkAmount;
-    bool isCashed;
-
-public:
-    
-    
-    Check(int checkNum, double checkAmount, bool isCashed);
-    
-    Check(int checkNum, double checkAmount);
-    
-    Check(int checkNum);
-    
-    Check();
-
-    int getCheckNum() const;
-    double getCheckAmount() const;
-    bool getIsChased() const;
-
-    void setCheckNum(int newCheckNum);
-    void setCheckAmount(double newCheckAmount);
-    void setIsCashed(bool newIsCashed);
-};
+#include <vector>
 
 class Money {
 
@@ -36,43 +10,43 @@ private:
 
 
 public:
-    friend Money operator +(const Money & amount1, const Money & amount2);
+    friend Money operator +(const Money& amount1, const Money& amount2);
     //Returns the sum of the values of amount1 and amount2.
 
-    friend Money operator -(const Money & amount1, const Money & amount2);
+    friend Money operator -(const Money& amount1, const Money& amount2);
     //Returns amount1 minus amount2.
 
-    friend Money operator -(const Money & amount);
+    friend Money operator -(const Money& amount);
     //Returns the negative of the value of amount.
 
-    friend bool operator ==(const Money & amount1, const Money & amount2);
+    friend bool operator ==(const Money& amount1, const Money& amount2);
     //Returns true if amount1 and amount2 have the same value; false otherwise.
 
-    friend bool operator <(const Money & amount1, const Money & amount2);
+    friend bool operator <(const Money& amount1, const Money& amount2);
     //Returns true if amount1 is less than amount2; false otherwise.
- 
+
     Money(long dollars, int cents);
     //Initializes the object so its value represents an amount with
     //the dollars and cents given by the arguments. If the amount
     //is negative, then both dollars and cents should be negative.
- 
+
     Money(long dollars);
     //Initializes the object so its value represents $dollars.00.
- 
+
     Money();
     //Initializes the object so its value represents $0.00.
- 
+
     double get_value() const;
     //Returns the amount of money recorded in the data portion of the calling
     //object.
- 
-    friend std::istream& operator >>(std::istream& ins, Money & amount);
+
+    friend std::istream& operator >>(std::istream& ins, Money& amount);
     //Overloads the >> operator so it can be used to input values of type
     //Money. Notation for inputting negative amounts is as in − $100.00.
     //Precondition: If ins is a file input stream, then ins has already been
     //connected to a file.
- 
-    friend std::ostream& operator <<(std::ostream& outs, const Money & amount);
+
+    friend std::ostream& operator <<(std::ostream& outs, const Money& amount);
     //Overloads the << operator so it can be used to output values of type
     //Money. Precedes each output value of type Money with a dollar sign.
     //Precondition: If outs is a file output stream, then outs has already been
@@ -87,9 +61,86 @@ int digit_to_int(char c);
 
 
 
+
+class Check {
+
+private:
+    int checkNum;
+    Money checkAmount;
+    bool isCashed;
+
+public:
+
+
+    Check(int checkNum, Money checkAmount, bool isCashed);
+
+    Check(int checkNum, Money checkAmount);
+
+    Check(int checkNum);
+
+    Check();
+
+    int getCheckNum() const;
+    double getCheckAmount() const;
+    bool getIsCashed() const;
+
+    void setCheckNum(int newCheckNum);
+    void setCheckAmount(Money newCheckAmount);
+    void setIsCashed(bool newIsCashed);
+
+    friend std::istream& operator >>(std::istream& ins, Check& userInput);
+    //friend std::ostream& operator <<(std::ostream& outs, const Check& userInput);
+
+    //I need a copy constructor
+};
+
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    int numChecks = 0;
+    Check userCheck;
+    std::vector<Check> userChecksVec;
+
+    /*Money testMoney1;
+    Money testMoney2;
+    Money testMoney3;
+
+    std::cin >> testMoney1;
+    std::cin >> testMoney2;
+
+    std::cout << testMoney1.get_value();
+
+    testMoney3 = testMoney1 + testMoney2;
+
+    std::cout << testMoney1 << " " << testMoney2 << std::endl;
+    std::cout << testMoney3;*/
+
+
+    std::cout << "Please enter the number of the check. the check amount, and whether the check has"
+        << " been cashed.\nEnter a whole number to represent the check number.\n" <<
+        "For the check amount, enter in the format $49.00.\n" <<
+        "Enter either a 1 if the check has been cashed or 0 if the check has not been cashed\n"
+        << "Example entry: 3 $233.23 1. " << std::endl;
+
+    std::cin >> userCheck;
+    numChecks++;
+
+    while (userCheck.getCheckNum() != 0 || userCheck.getCheckAmount() != 0 || userCheck.getIsCashed() != 0) {
+        userChecksVec.push_back(userCheck);
+        std::cin >> userCheck;
+        
+        if (userCheck.getCheckNum() != 0 || userCheck.getCheckAmount() != 0 || userCheck.getIsCashed() != 0) {
+            
+            numChecks++;
+            std::cout << numChecks << std::endl;
+        }
+    }
+   
+    /*for (int i = 0; i < numChecks; i++) {
+        std::cout << userChecksVec[i].getCheckNum() << " $" << userChecksVec[i].getCheckAmount() <<
+            " " << userChecksVec[i].getIsCashed() << std::endl;
+    }*/
+    
 }
 
 int Check::getCheckNum() const {
@@ -97,10 +148,10 @@ int Check::getCheckNum() const {
 }
 
 double Check::getCheckAmount() const {
-    return checkAmount;
+    return checkAmount.get_value();
 }
 
-bool Check::getIsChased() const {
+bool Check::getIsCashed() const {
     return isCashed;
 }
 
@@ -109,8 +160,8 @@ void Check::setCheckNum(int newCheckNum) {
         checkNum = newCheckNum;
     }
 }
-void Check::setCheckAmount(double newCheckAmount) {
-    if (newCheckAmount != checkAmount && newCheckAmount >= 0) {
+void Check::setCheckAmount(Money newCheckAmount) {
+    if (newCheckAmount.get_value() != checkAmount.get_value() && newCheckAmount.get_value() >= 0) {
         checkAmount = newCheckAmount;
     }
 }
@@ -120,11 +171,12 @@ void Check::setIsCashed(bool newIsCashed) {
     }
 }
 
-Check::Check(int checkNum, double checkAmount, bool isCashed) : checkNum(checkNum), checkAmount(checkAmount), isCashed(isCashed) {
+Check::Check(int checkNum, Money checkAmount, bool isCashed) : checkNum(checkNum), checkAmount(checkAmount), isCashed(isCashed) {
     //Body intentionally blank.
-}
+}   //I am currently worried about what this constructor is actually doing with 
+    // the Money variable when it accepts a value
 
-Check::Check(int checkNum, double checkAmount) : checkNum(checkNum), checkAmount(checkAmount), isCashed(false) {
+Check::Check(int checkNum, Money checkAmount) : checkNum(checkNum), checkAmount(checkAmount), isCashed(false) {
     //Body intentionally blank.
 }
 
@@ -136,6 +188,33 @@ Check::Check() : checkNum(0), checkAmount(0), isCashed(false) {
     //Body intentionally blank.
 }
 
+std::istream& operator >>(std::istream& ins, Check& userInput) {
+    int userCheckNum;
+    Money userCheckAmount;
+    bool userIsCashed;
+
+    ins >> userCheckNum >> userCheckAmount >> userIsCashed;
+
+    if (userCheckNum < 0) {
+        std::cout << "An incorrect check number value was entered. This program will now exit.";
+        exit(1);
+    }
+
+    userInput.checkNum = userCheckNum;
+    userInput.checkAmount = userCheckAmount;
+    userInput.isCashed = userIsCashed;
+    
+
+    return ins;
+}
+
+//std::ostream& operator <<(std::ostream& outs, const Check& userInput) {
+//    outs << userInput.checkNum;
+//    outs << userInput.checkAmount;
+//    outs << userInput.isCashed;
+//
+//    return outs;
+//}
 
 
 
@@ -235,7 +314,7 @@ double Money::get_value() const {
     return (all_cents * 0.01);
 }
 
-std::istream& operator >>(std::istream& ins, Money & amount) {
+std::istream& operator >>(std::istream& ins, Money& amount) {
     char one_char, decimal_point, digit1, digit2;
     //digits for the amount of cents
     long dollars;
@@ -252,7 +331,7 @@ std::istream& operator >>(std::istream& ins, Money & amount) {
         //if input is legal, then one_char == '$'
     }
     ins >> dollars >> decimal_point >> digit1 >> digit2;
-    
+
 
     if (one_char != '$' || decimal_point != '.'
         || !isdigit(digit1) || !isdigit(digit2)) {
@@ -262,7 +341,7 @@ std::istream& operator >>(std::istream& ins, Money & amount) {
     }
 
     cents = digit_to_int(digit1) * 10 + digit_to_int(digit2);
-    
+
     amount.all_cents = dollars * 100 + cents;
     if (negative) {
         amount.all_cents = -amount.all_cents;
@@ -283,7 +362,7 @@ std::ostream& operator <<(std::ostream& outs, const Money& amount) {
     else {
         outs << "$" << dollars << '.';
     }
-    
+
     if (cents < 10) {
         outs << '0';
     }
