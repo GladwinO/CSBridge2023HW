@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 class Money {
 
@@ -91,7 +92,7 @@ public:
 
 
     friend std::istream& operator >>(std::istream& ins, Check& userInput);
-    //friend std::ostream& operator <<(std::ostream& outs, const Check& userInput);
+    friend std::ostream& operator <<(std::ostream& outs, const Check& userInput);
 
     //I need a copy constructor
 };
@@ -101,7 +102,8 @@ int main()
 {
     int numChecks = 0, numDeposit = 0;
     Check userCheck;
-    Money userDeposit, oldUserAccBalance, newUserAccBalance, bankAccBalance;
+    Money userDeposit, oldUserAccBalance, newUserAccBalance;
+    double bankAccBalance, sumUserDeposit, sumCashedCheck = 0, totBalanceDif;
     std::vector<Check> userChecksVec;
     std::vector<Money> userDepositVec;
 
@@ -124,32 +126,36 @@ int main()
             numChecks++;
         }
     }
-    
+    std::cout << "\n";
     
     /*for (int i = 0; i < numChecks; i++) {
         std::cout << userChecksVec[i].getCheckNum() << " $" << userChecksVec[i].getCheckAmount() <<
             " " << userChecksVec[i].getIsCashed() << std::endl;
     }*/
 
-    /*std::cout << "Please enter all new deposits in the form $45.00.\n" 
+    std::cout << "Please enter all new deposits in the form $45.00.\n" 
         << "When finished please enter $0.00 to exit.\n" << std::endl;
 
     std::cin >> userDeposit;
     numDeposit++;
+    sumUserDeposit = userDeposit.get_value();
+
 
     while (userDeposit.get_value() != 0) {
         userDepositVec.push_back(userDeposit);
         std::cin >> userDeposit;
+        sumUserDeposit += userDeposit.get_value();
 
         if (userDeposit.get_value() != 0) {
 
             numDeposit++;
         }
-    }*/
+    }
 
     /*for (int i = 0; i < numDeposit; i++) {
         std::cout << "$" << userDepositVec[i].get_value() << std::endl;
     }*/
+    std::cout << "\n";
 
     std::cout << "Please enter the old account balance in the form $10.00:" << std::endl;
     std::cin >> oldUserAccBalance;
@@ -157,13 +163,39 @@ int main()
     std::cout << "Please enter the new account balance in the form $10.00:" << std::endl;
     std::cin >> newUserAccBalance;
 
+    bankAccBalance = oldUserAccBalance.get_value() + sumUserDeposit;
 
-    std::cout << userChecksVec[0].getCheckAmount() - userChecksVec[1].getCheckAmount() << std::endl;
-    std::cout << oldUserAccBalance - userChecksVec[0].getCheckAmount() << std::endl;
-    std::cout << oldUserAccBalance.get_value() - userChecksVec[0].getCheckAmount() << std::endl;
-    std::cout << newUserAccBalance - oldUserAccBalance << std::endl;
+    for (int i = 0; i < numChecks; i++) {
+        if (userChecksVec[i].getIsCashed()) {
+            bankAccBalance -= userChecksVec[i].getCheckAmount();
+            sumCashedCheck += userChecksVec[i].getCheckAmount();
+        }
+    }
 
-    std::cout << oldUserAccBalance << " " << oldUserAccBalance.get_value() << std::endl;
+    totBalanceDif = std::abs(bankAccBalance - newUserAccBalance.get_value());
+    
+    std::cout << "Cashed Checks Total: " << "$" << sumCashedCheck << std::endl;
+    std::cout << "Deposit Sum: " << sumUserDeposit << std::endl;
+    std::cout << "The new balance you entered: " << newUserAccBalance << std::endl;
+    std::cout << "Bank New Balance: " << "$" << bankAccBalance << std::endl;
+    std::cout << "Difference bewtween the entered new balance and the " <<
+        "bank's new balance: $" << totBalanceDif << std::endl;
+
+    std::cout << "Here is a list of all the checks that are cashed:" << std::endl;
+
+    for (int i = 0; i < numChecks; i++) {
+        if (userChecksVec[i].getIsCashed()) {
+            std::cout << userChecksVec[i] << std::endl;
+        }
+    }
+
+    std::cout << "Here is a list of all the checks that were not cashed:" << std::endl;
+    for (int i = 0; i < numChecks; i++) {
+        if (!userChecksVec[i].getIsCashed()) {
+            std::cout << userChecksVec[i] << std::endl;
+        }
+    }
+   
 
     
 
@@ -241,13 +273,13 @@ std::istream& operator >>(std::istream& ins, Check& userInput) {
     return ins;
 }
 
-/*std::ostream& operator <<(std::ostream& outs, const Check& userInput) {
-    outs << userInput.checkNum;
-    outs << userInput.checkAmount;
-    outs << userInput.isCashed;
-
+std::ostream& operator <<(std::ostream& outs, const Check& userInput) {
+    outs << "Check number: " << userInput.checkNum << " ";
+    outs << "has amount " << userInput.checkAmount << " ";
+    //outs << userInput.isCashed;
+    //currently cannot think of a need to cout if cashed or not
     return outs;
-}*/
+}
 
 
 
