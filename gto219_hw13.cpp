@@ -23,11 +23,11 @@ public:
 };
 
 class Ant : public Organism {
-public: 
+public:
     Ant();
     Ant(int curRowPos, int curColPos);
     Ant(char antRepChar, int curRowPos, int curColPos); // can change the char that reps ant
-    //needs virtual fucntion for move
+    virtual void move(int curRowPos, int curColPos);
     //need virtual function for breed
 };
 
@@ -102,6 +102,21 @@ Ant::Ant(int curRowPos, int curColPos) : Organism(curRowPos, curColPos) {
 }
 Ant::Ant(char antRepChar, int curRowPos, int curColPos) : Organism(antRepChar, curRowPos, curColPos) {
     //deliberately left empty
+}
+
+void Ant::move(int curRowPos, int curColPos) {
+    int randNum = 0;
+    randNum = (std::rand() % 4) + 1;
+    // 1 is up, 2 is down, 3 is left, 4 is right
+    switch (randNum) {
+    case 1:
+        setRowPos(getRowPos() - 1);
+        break;
+    case 2:
+        setRowPos(getRowPos() + 1);
+        break;
+    }
+
 }
 
 
