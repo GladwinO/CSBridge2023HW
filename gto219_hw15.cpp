@@ -107,6 +107,7 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
     //say to exit the loop must enter a pound sign
     //do i just take everything as a double instead?
     //only works for the first enter and not after
+    //it currently gets messed up when i introduce a input like 23.34
     while (ins >> userDollars) {
         std::cout << userDollars;
         if (ins >> punctPoint && punctPoint == '.') {
@@ -142,6 +143,7 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
                 tempName += userFullName[frontWhiteSpaceCounter];
 
             }
+            std::wcout << punctPoint;
             if (!containsPunctPoint) {
                 std::string fullNameFix;
                 fullNameFix = punctPoint;
