@@ -92,22 +92,26 @@ void BarAttendee::setAmountPaid(long amountPaid) {
 void BarAttendee::setUserFullName(std::string name) {
     userFullName = name;
 }
-void BarAttendee::setAmountOwed(long amountOwed){
+void BarAttendee::setAmountOwed(long amountOwed) {
     //amount in cents
     amountOwedInCents = amountOwed;
 }
 
 std::istream& operator>>(std::istream& ins, BarAttendee& person) {
     int userDollars = 0;
+    bool containsPunctPoint = false;
     char punctPoint, digit1, digit2;
     std::string userFullName;
-    
+
 
     //say to exit the loop must enter a pound sign
+    //do i just take everything as a double instead?
+    //only works for the first enter and not after
     while (ins >> userDollars) {
         std::cout << userDollars;
         if (ins >> punctPoint && punctPoint == '.') {
             std::cout << punctPoint;
+            containsPunctPoint = true;
             if (ins >> digit1) {
                 int intDigit1;
                 intDigit1 = charDigitToInt(digit1);
@@ -121,7 +125,7 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
 
         }
         std::cout << std::endl;
-        /*userFileName.ignore(9999, '\t')*/
+        
         if (std::getline(ins, userFullName)) {
             int length = 0;
             std::string tempName;
@@ -137,6 +141,12 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
             for (frontWhiteSpaceCounter; frontWhiteSpaceCounter < length; frontWhiteSpaceCounter++) {
                 tempName += userFullName[frontWhiteSpaceCounter];
 
+            }
+            if (!containsPunctPoint) {
+                std::string fullNameFix;
+                fullNameFix = punctPoint;
+                fullNameFix += tempName;
+                tempName = fullNameFix;
             }
             userFullName = tempName;
         }
