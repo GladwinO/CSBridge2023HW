@@ -33,7 +33,8 @@ int main()
     openInputFile(userFileName);*/
 
     std::cin >> person1;
-
+    std::cout << person1.getAmountPaid() << std::endl;
+    std::cout << person1.getUserFullName();
 
 
     //userFileName.close();
@@ -100,7 +101,10 @@ void BarAttendee::setAmountOwed(long amountOwed) {
 std::istream& operator>>(std::istream& ins, BarAttendee& person) {
     int userDollars = 0;
     bool containsPunctPoint = false;
+    bool containsDigit1 = false;
+    bool containsDigit2 = false;
     char punctPoint, digit1, digit2;
+    int intDigit1 = 0, intDigit2 = 0;
     std::string userFullName;
 
 
@@ -108,25 +112,27 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
     //do i just take everything as a double instead?
     //only works for the first enter and not after
     //it currently gets messed up when i introduce a input like 23.34
-    while (ins >> userDollars) {
-        std::cout << userDollars;
+    if (ins >> userDollars) {
+        person.amountPaidInCents += userDollars * 100;
         if (ins >> punctPoint && punctPoint == '.') {
-            std::cout << punctPoint;
+            
             containsPunctPoint = true;
-            if (ins >> digit1) {
-                int intDigit1;
+            if (ins >> digit1 && containsPunctPoint && !isalpha(digit1)) {
+                containsDigit1 = true;
                 intDigit1 = charDigitToInt(digit1);
-                std::cout << intDigit1;
-                if (ins >> digit2) {
-                    int intDigit2;
+                person.amountPaidInCents += intDigit1 * 10;
+                
+                if (ins >> digit2 && containsDigit1 && !isalpha(digit2)) {
+                    containsDigit2 = true;
                     intDigit2 = charDigitToInt(digit2);
-                    std::cout << intDigit2;
+                    person.amountPaidInCents += intDigit2;
+                    
                 }
             }
 
         }
-        std::cout << std::endl;
         
+
         if (std::getline(ins, userFullName)) {
             int length = 0;
             std::string tempName;
@@ -143,17 +149,29 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
                 tempName += userFullName[frontWhiteSpaceCounter];
 
             }
-            std::wcout << punctPoint;
             if (!containsPunctPoint) {
                 std::string fullNameFix;
                 fullNameFix = punctPoint;
                 fullNameFix += tempName;
                 tempName = fullNameFix;
             }
+            else if (!containsDigit1) {
+                std::string fullNameFix;
+                fullNameFix = digit1;
+                fullNameFix += tempName;
+                tempName = fullNameFix;
+            }
+            else if (!containsDigit2) {
+                std::string fullNameFix;
+                fullNameFix = digit2;
+                fullNameFix += tempName;
+                tempName = fullNameFix;
+            }
+            
             userFullName = tempName;
         }
-
-        std::cout << userFullName;
+        
+        person.userFullName = userFullName;
 
     }
 
