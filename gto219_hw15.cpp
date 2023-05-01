@@ -7,6 +7,36 @@
 void openInputFile(std::ifstream& inFile);
 int charDigitToInt(char digit);
 
+
+template <class T>
+class LListNode {
+    T data;
+    LListNode<T>* next;
+public:
+    LListNode(T newdata = T(), LListNode<T>* newNext = nullptr);
+    friend class LList < T >;
+};
+
+template <class T>
+class LList {
+    LListNode<T>* head;
+    LListNode<T>* recursiveCopy(LListNode<T>* rhs);
+public:
+    LList();
+    LList(const LList& rhs);
+    //LList<T>& operator=(const LList<T> rhs);
+    ~LList();
+    //void insertAtHead(T newdata);
+    //T removeFromHead();
+    bool isEmpty() const;
+    //void clear();
+    //void insertAtEnd(T newdata);
+    //void insertAtPoint(LListNode<T>* ptr, T newdata);
+    //int size() const;
+};
+
+
+
 class BarAttendee {
 private:
     long amountPaidInCents;
@@ -40,6 +70,52 @@ int main()
     //userFileName.close();
 
 }
+template < class T >
+LListNode<T>::LListNode(T newdata, LListNode<T>* newNext) : data(newdata), next(newNext) {};
+
+template < class T > 
+LList<T>::LList() : head(nullptr){/*deliberately left empty*/ };
+
+template < class T >
+LList<T>::LList(const LList& rhs) : head(nullptr) {
+    *this = rhs;
+}
+
+template< class T >
+LList<T>::~LList() {
+    clear();
+}
+
+template< class T >
+LListNode<T>* LList<T>::recursiveCopy(LListNode<T>* rhs) {
+    if (rhs == nullptr) {
+        return nullptr;
+    }
+    return new LListNode<T>(rhs->data, recursiveCopy(rhs->next));
+}
+
+//template< class T >
+//void LList<T>::insertAtHead(T newdata)
+
+//template< class T > 
+//T LList<T>::removeFromHead()
+
+template< class T >
+bool LList<T>::isEmpty() const {
+    return head == nullptr;
+}
+
+//template< class T >
+//void LList<T>::clear()
+
+//template< class T >
+//void LList<T>::insertAtEnd(T newdata)
+
+//template< class T >
+//void LList<T>::insertAtPoint(LListNode<T>* ptr, T newdata)
+
+//template< class T >
+//int LList<T>::size() const
 
 
 void openInputFile(std::ifstream& inFile) {
