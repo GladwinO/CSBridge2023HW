@@ -25,7 +25,7 @@ public:
     LList();
     LList(const LList& rhs);
     //LList<T>& operator=(const LList<T> rhs);
-    ~LList();
+    //~LList();
     //void insertAtHead(T newdata);
     //T removeFromHead();
     bool isEmpty() const;
@@ -58,16 +58,16 @@ public:
 
 int main()
 {
-    BarAttendee person1;
-    /*std::ifstream userFileName;
-    openInputFile(userFileName);*/
+    //BarAttendee person1;
+    ///*std::ifstream userFileName;
+    //openInputFile(userFileName);*/
 
-    std::cin >> person1;
-    std::cout << person1.getAmountPaid() << std::endl;
-    std::cout << person1.getUserFullName();
+    //std::cin >> person1;
+    //std::cout << person1.getAmountPaid() << std::endl;
+    //std::cout << person1.getUserFullName();
 
 
-    //userFileName.close();
+    ////userFileName.close();
 
 }
 template < class T >
@@ -81,10 +81,10 @@ LList<T>::LList(const LList& rhs) : head(nullptr) {
     *this = rhs;
 }
 
-template< class T >
-LList<T>::~LList() {
-    clear();
-}
+//template< class T >
+//LList<T>::~LList() {
+//    clear();
+//}
 
 template< class T >
 LListNode<T>* LList<T>::recursiveCopy(LListNode<T>* rhs) {
@@ -106,7 +106,11 @@ bool LList<T>::isEmpty() const {
 }
 
 //template< class T >
-//void LList<T>::clear()
+//void LList<T>::clear() {
+//    whlie(!isEmpty()) {
+//        removeFromHead();
+//    }
+//}
 
 //template< class T >
 //void LList<T>::insertAtEnd(T newdata)
