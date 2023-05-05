@@ -7,6 +7,8 @@
 void openInputFile(std::ifstream& inFile);
 int charDigitToInt(char digit);
 
+template <class T>
+class LList; //pre-definition needed for friend class to work
 
 template <class T>
 class LListNode {
@@ -30,9 +32,9 @@ public:
     //T removeFromHead();
     bool isEmpty() const;
     //void clear();
-    //void insertAtEnd(T newdata);
+    void insertAtEnd(T newdata);
     //void insertAtPoint(LListNode<T>* ptr, T newdata);
-    //int size() const;
+    int size() const;
 };
 
 
@@ -95,7 +97,9 @@ LListNode<T>* LList<T>::recursiveCopy(LListNode<T>* rhs) {
 }
 
 //template< class T >
-//void LList<T>::insertAtHead(T newdata)
+//void LList<T>::insertAtHead(T newdata) {
+//    
+//}
 
 //template< class T > 
 //T LList<T>::removeFromHead()
@@ -112,14 +116,33 @@ bool LList<T>::isEmpty() const {
 //    }
 //}
 
-//template< class T >
-//void LList<T>::insertAtEnd(T newdata)
+template <class T> 
+void LList<T>::insertAtEnd(T newdata) {
+    if (isEmpty()) {
+        insertAtHead(newdata);
+        return;
+    }
+    LListNode<T>* temp = new LListNode<T>(newdata);
+    LListNode<T>* end = head;
+    while (end->next != nullptr) {
+        end = end->next;
+    }
+    end->next = temp;
+}
 
 //template< class T >
 //void LList<T>::insertAtPoint(LListNode<T>* ptr, T newdata)
 
-//template< class T >
-//int LList<T>::size() const
+template< class T >
+int LList<T>::size() const {
+    int count = 0;
+    LListNode<T>* temp = head;
+    while (temp != nullptr) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
 
 
 void openInputFile(std::ifstream& inFile) {
