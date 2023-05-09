@@ -26,14 +26,14 @@ class LList {
 public:
     LList();
     LList(const LList& rhs);
-    //LList<T>& operator=(const LList<T> rhs);
-    //~LList();
-    //void insertAtHead(T newdata);
-    //T removeFromHead();
+    LList<T>& operator=(const LList<T> rhs);
+    ~LList();
+    void insertAtHead(T newdata);
+    T removeFromHead();
     bool isEmpty() const;
-    //void clear();
+    void clear();
     void insertAtEnd(T newdata);
-    //void insertAtPoint(LListNode<T>* ptr, T newdata);
+    void insertAtPoint(LListNode<T>* ptr, T newdata);
     int size() const;
 };
 
@@ -75,18 +75,18 @@ int main()
 template < class T >
 LListNode<T>::LListNode(T newdata, LListNode<T>* newNext) : data(newdata), next(newNext) {};
 
-template < class T > 
-LList<T>::LList() : head(nullptr){/*deliberately left empty*/ };
+template < class T >
+LList<T>::LList() : head(nullptr) {/*deliberately left empty*/ };
 
 template < class T >
 LList<T>::LList(const LList& rhs) : head(nullptr) {
     *this = rhs;
 }
 
-//template< class T >
-//LList<T>::~LList() {
-//    clear();
-//}
+template< class T >
+LList<T>::~LList() {
+    clear();
+}
 
 template< class T >
 LListNode<T>* LList<T>::recursiveCopy(LListNode<T>* rhs) {
@@ -96,27 +96,67 @@ LListNode<T>* LList<T>::recursiveCopy(LListNode<T>* rhs) {
     return new LListNode<T>(rhs->data, recursiveCopy(rhs->next));
 }
 
-//template< class T >
-//void LList<T>::insertAtHead(T newdata) {
-//    
-//}
+template<class T>
+LList<T>& LList<T>::operator=(const LList<T> rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    /*template<class T>
+LList<T>& LList<T>::operator=(const LList<T> rhs) {
+    // Step 1: Check for self-assignment
+    if (this == &rhs) {
+        return *this;
+    }
 
-//template< class T > 
-//T LList<T>::removeFromHead()
+    // Step 2: Clear the current list
+    clear();
+
+    // Step 3: Copy the nodes
+    LListNode<T>* rhs_node = rhs.head;
+    while (rhs_node != nullptr) {
+        insertAtTail(rhs_node->data);
+        rhs_node = rhs_node->next;
+    }
+
+    // Step 4: Return a reference to the current object
+    return *this;
+}*/
+}
+
+template< class T >
+void LList<T>::insertAtHead(T newdata) {
+    LListNode<T>* temp_ptr;
+    temp_ptr = new LListNode<T>;
+    temp_ptr->data = newdata;
+    temp_ptr->next = head;
+    head = temp_ptr;
+}
+
+template< class T > 
+T LList<T>::removeFromHead() {
+    
+    LListNode<T>* new_head;
+    new_head = head->next;
+    T data = head->data;
+    delete head;
+    head = nullptr;
+    head = new_head;
+    return data;
+}
 
 template< class T >
 bool LList<T>::isEmpty() const {
     return head == nullptr;
 }
 
-//template< class T >
-//void LList<T>::clear() {
-//    whlie(!isEmpty()) {
-//        removeFromHead();
-//    }
-//}
+template< class T >
+void LList<T>::clear() {
+    whlie(!isEmpty()) {
+        removeFromHead();
+    }
+}
 
-template <class T> 
+template <class T>
 void LList<T>::insertAtEnd(T newdata) {
     if (isEmpty()) {
         insertAtHead(newdata);
@@ -130,8 +170,18 @@ void LList<T>::insertAtEnd(T newdata) {
     end->next = temp;
 }
 
-//template< class T >
-//void LList<T>::insertAtPoint(LListNode<T>* ptr, T newdata)
+template< class T >
+void LList<T>::insertAtPoint(LListNode<T>* ptr, T newdata) {
+    LListNode<T>* temp_ptr;
+    temp_ptr = new LListNode<T>;
+    temp_ptr->data = newdata;
+    LListNode<T>* insertPoint = head;
+    while (insertPoint->next != ptr) {
+        insertPoint = insertPoint->next;
+    }
+    insertPoint->next = temp_ptr;
+    temp_ptr->next = ptr;
+}
 
 template< class T >
 int LList<T>::size() const {
@@ -218,23 +268,23 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
     if (ins >> userDollars) {
         person.amountPaidInCents += userDollars * 100;
         if (ins >> punctPoint && punctPoint == '.') {
-            
+
             containsPunctPoint = true;
             if (ins >> digit1 && containsPunctPoint && !isalpha(digit1)) {
                 containsDigit1 = true;
                 intDigit1 = charDigitToInt(digit1);
                 person.amountPaidInCents += intDigit1 * 10;
-                
+
                 if (ins >> digit2 && containsDigit1 && !isalpha(digit2)) {
                     containsDigit2 = true;
                     intDigit2 = charDigitToInt(digit2);
                     person.amountPaidInCents += intDigit2;
-                    
+
                 }
             }
 
         }
-        
+
 
         if (std::getline(ins, userFullName)) {
             int length = 0;
@@ -270,10 +320,10 @@ std::istream& operator>>(std::istream& ins, BarAttendee& person) {
                 fullNameFix += tempName;
                 tempName = fullNameFix;
             }
-            
+
             userFullName = tempName;
         }
-        
+
         person.userFullName = userFullName;
 
     }
