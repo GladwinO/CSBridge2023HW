@@ -169,26 +169,29 @@ void RBT<T>::insert(const T& toInsert, RBTNode<T>*& point, RBTNode<T>* parent) {
         if (parent == nullptr) {
             swapColor(point);
         }
-        else if (getColor(parent) == RED) {
-            if (getColor(parent->right) == BLACK || getColor(parent->left) == BLACK) {
-                if (point == parent->left && parent == parent->parent->left) {
-                    singleCR(parent->parent);
-                    //this needs a check for color change and restabalizing the color rules
-                }
-                else if (point == parent->right && parent == parent->parent->right) {
-                    singleCCR(parent->parent);
-                    //needs a check for color change and restabilizing the color rules
-                }
-                else if (point == parent->left && parent == parent->parent->right) {
-                    doubleCCR(parent->parent);
-                    //needs a check for color change and restabilizing the color rules
-                }
-                else if (point == parent->right && parent == parent->parent->left) {
-                    doubleCR(parent->parent);
-                    //needs a check for color change and restabilizing the color rules
+        if(parent != nullptr && parent->parent != nullptr){
+            if (getColor(parent) == RED) {
+                if (getColor(parent->right) == BLACK || getColor(parent->left) == BLACK) {
+                    if (point == parent->left && parent == parent->parent->left) {
+                        singleCR(parent->parent);
+                        //this needs a check for color change and restabalizing the color rules
+                    }
+                    else if (point == parent->right && parent == parent->parent->right) {
+                        singleCCR(parent->parent);
+                        //needs a check for color change and restabilizing the color rules
+                    }
+                    else if (point == parent->left && parent == parent->parent->right) {
+                        doubleCCR(parent->parent);
+                        //needs a check for color change and restabilizing the color rules
+                    }
+                    else if (point == parent->right && parent == parent->parent->left) {
+                        doubleCR(parent->parent);
+                        //needs a check for color change and restabilizing the color rules
+                    }
                 }
             }
         }
+        
     }
     else if (toInsert < point->data) { // recurse down the tree to left to find correct leaf locationn //this is where i would put the total tree color change
         insert(toInsert, point->left, point);
