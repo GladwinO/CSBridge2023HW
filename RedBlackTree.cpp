@@ -43,7 +43,21 @@ public:
     friend void swapColor(RBTNode<T1>*);
     template <class T1>
     friend int getColor(RBTNode<T1>*);
-
+    //////////////////////////////////////////////Testing Code//////////////////////////////
+    T getData() {
+        return data;
+    }
+    T getLeft() {
+        if (left != nullptr) {
+            return left->data;
+        } 
+    }
+    T getRight() {
+        if (right != nullptr) {
+            return right->data;
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////
     int height() const;
 };
 
@@ -109,7 +123,11 @@ public:
     void insert(const T&);
     void insert(const T&, RBTNode<T>*& point, RBTNode<T>* parent);
     void prettyPrint() const { root->prettyPrint(0); }
-
+    ///////////////////////////////// TEST CODE PURPOSES ONLY//////////////////////////////////////////////
+    void getRoot() {
+        cout << root->getData() << " " << root->getRight() << " " << root->getLeft() << endl;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     int height() const { return root->height(); }
 };
 
@@ -136,7 +154,14 @@ void RBT<T>::singleCR(RBTNode<T>*& point) {
     }
     parent->right = grandparent;
     parent->parent = grandparent->parent;
+    if (parent->parent == nullptr) {
+        root = parent;
+        swapColor(parent);
+    }
     grandparent->parent = parent;
+    if (parent->parent == nullptr) {
+        cout << "YES" << endl;
+    }
     point = parent;
 }
 
@@ -144,6 +169,7 @@ template <class T>
 void RBT<T>::singleCCR(RBTNode<T>*& point) {
     RBTNode<T>* grandparent = point;
     RBTNode<T>* parent = point->right;
+    
     // TODO: ADD ROTATION CODE HERE
     grandparent->right = parent->left;
     if (parent->left != nullptr) {
@@ -151,7 +177,12 @@ void RBT<T>::singleCCR(RBTNode<T>*& point) {
     }
     parent->left = grandparent;
     parent->parent = grandparent->parent;
+    if (parent->parent == nullptr) {
+        root = parent;
+        swapColor(parent);
+    }
     grandparent->parent = parent;
+    
     point = parent;
 }
 
@@ -167,16 +198,32 @@ void RBT<T>::insert(const T& toInsert, RBTNode<T>*& point, RBTNode<T>* parent) {
         //funcions I can use: singleCCR, single CR, doubleCCR, doubleCR, getColor, swapColor
         //I am currently will not add the check to see if there is any black parent with two red children
         if (parent == nullptr) {
-            swapColor(point);
+            swapColor(curr_node);
+            root = curr_node;
         }
         if(parent != nullptr && parent->parent != nullptr){
             if (getColor(parent) == RED) {
                 if (getColor(parent->right) == BLACK || getColor(parent->left) == BLACK) {
                     if (point == parent->left && parent == parent->parent->left) {
+                        parent->parent->getData();
+                        if (parent->parent->parent == nullptr) {
+                            cout << "YES" << endl;
+                        }
+                        parent->getData();
                         singleCR(parent->parent);
+
                         //this needs a check for color change and restabalizing the color rules
                     }
                     else if (point == parent->right && parent == parent->parent->right) {
+                        parent->parent->getData();
+                        if (parent->parent->parent != nullptr) {
+                           cout << parent->parent->parent->getData() << endl;
+                        }
+                        
+                        if (parent->parent->parent == nullptr) {
+                            cout << "YES" << endl;
+                        }
+                        parent->getData();
                         singleCCR(parent->parent);
                         //needs a check for color change and restabilizing the color rules
                     }
@@ -190,6 +237,9 @@ void RBT<T>::insert(const T& toInsert, RBTNode<T>*& point, RBTNode<T>* parent) {
                     }
                 }
             }
+            ///////////////FOR TESTING PURPOSESING ONLY////////////////////////////////////
+            //parent->prettyPrint(0);
+            /////////////////////////////////////////////////////////////////////////////
         }
         
     }
@@ -209,11 +259,11 @@ void RBT<T>::insert(const T& toInsert) {
 // NOTE: DO NOT MODIFY THE MAIN FUNCTION BELOW
 int main() {
     RBT<int> b;
-    int count = 10;
+    int count = 4;
     for (int i = 0; i < count; i++) {
         b.insert(i);
     }
-
+    //b.getRoot();
     b.prettyPrint();
     /* EXPECTED OUTPUT:
                                                                     Data: 9
